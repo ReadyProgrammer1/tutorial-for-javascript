@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="icon" href="JoustingKnight.png">
+	<link rel="stylesheet" type="text/css" href="HasteStyles.css">
+	<title>Make Haste! Dictionary Object</title>
+  
+  <script>
+  
+    // Copies a string to the clipboard. Must be called from within an event handler such as click.
+	// May return false if failed
+	// Browser support for Chrome 43+, Firefox 42+, Edge and IE 10+.
+	// Safari support? Returns false.
+	// IE: The clipboard feature may be disabled by an adminstrator. By default a prompt may
+	// be shown the first time the clipboard is used (per session).
+	function highlight(text) {
+		
+		var e = document.getElementById("code");
+		var textNode = ''; //text node is the first child node of a span
+		
+		for (a = 0; a <= e.childNodes.length - 1; a++) {
+			textNode += e.childNodes[a].textContent + '\n';
+		}
+		
+		if (window.clipboardData && window.clipboardData.setData) {
+			// IE specific code path to prevent textarea being shown while dialog is visible.
+			return clipboardData.setData("Text", textNode); 
+		} else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
+			var textarea = document.createElement("textarea");
+			textarea.textContent = textNode;
+			textarea.style.position = "fixed";  // Prevent scrolling to bottom of page in MS Edge.
+			document.body.appendChild(textarea);
+			textarea.select();
+			try {
+				document.execCommand("copy");  // Security exception may be thrown by some browsers.
+			} catch (ex) {
+				console.warn("Copy to clipboard failed.", ex);
+				return false;
+			} finally {
+				document.body.removeChild(textarea);
+			}
+		}
+		
+		var r = document.createRange();
+
+		r.setStart(e.firstChild,0); 
+		r.setEnd(e.lastChild,1);
+		
+		var s = window.getSelection();
+		s.removeAllRanges();
+		s.addRange(r);
+
+		setTimeout(function() {
+			window.alert('The selected code has been copied to the clipboard.\nPaste into <body> of html page.');
+		},  15);
+		
+		//window.prompt("Copy to clipboard: Ctrl+C, Enter", textNode);
+	}
+	
+	function pasteIntoEditor(codeToPaste) {
+		//var codeToPaste = prompt("Hey type something here: ");
+		localStorage.setItem("codeFromExample",codeToPaste);
+		window.open('CodeEditor.html', '_self');
+	}
+
+</script>
+  
+</head>
+<body>
+  <h2><a oncontextmenu="return false" href="javascript:void window.open('Tutorial_Main.html', '_self');">
+    All Examples
+  </a></h2>
+  <div id="title"></div><!--<button id='copy'>Copy code to clipboard</button>&nbsp;--><button id='paste'>Paste code in Code Editor</button><br><br>
+  <div id="testing"><div id="divCode" style="background-color:#F7EEF1"><span id='code' style='color:black'></span></div></div>
+  <br><br><button id='next' onclick="javascript:void window.open('Tutorial_Main.html', '_self');">Next Example</button>
+  <div id="editorCode" style="display: none;"></div>
+  <script>
+	var codeToPaste = "";
+	
+	//document.querySelector("#copy").onclick = function() {
+	//	var result = highlight(new Date().toString());
+	//};
+	
+	document.querySelector("#paste").onclick = function() {
+		var result = pasteIntoEditor(codeToPaste);
+	};
+  
+    if(document.getElementById("title") != null){
+		var elm1 = document.getElementById("title"), divS = document.createElement('div');
+		divS.innerHTML = '<h2>Basic Javascript Dictionary Object</h2>';
+		divS.insertAdjacentHTML('beforeend', '<b>The</b> Dictionary object contains keys that can hold values of any type.<br>');
+		divS.insertAdjacentHTML('beforeend', '<b>Declare</b> Dictionary object "mine" and add keys with string values of "dirt", "coal", "more dirt", "gold", "more dirt", "diamonds", and "more dirt".<br>');
+		divS.insertAdjacentHTML('beforeend', '<b>Declare</b> a boolean variable "keepMining" to use as a switch to break from the search loop.<br>');
+		divS.insertAdjacentHTML('beforeend', '<b>Search</b> the Dictionary object by <a oncontextmenu="return false" href="javascript:void window.open(\'ForLoops.html\', \'_self\');">looping</a> through each key.<br>');
+		divS.insertAdjacentHTML('beforeend', '<b>Check</b> each key in the Dictionary object to see if it contains gold or diamonds.<br>');
+		divS.insertAdjacentHTML('beforeend', '<b>Continue</b> searching through Dictionary and populating &lt;div&gt; element with each find until "diamonds" are found.<br>');
+		divS.insertAdjacentHTML('beforeend', '<b>When</b> "diamonds" are found in the Dictionary object populate the &lt;div&gt; element and exit search.<br><br>');
+		
+		elm1.appendChild(divS);
+    }
+    if(document.getElementById("testing") != null){
+		var elm2 = document.getElementById("testing"), divT = document.createElement('div'), divEditorCode = document.getElementById('editorCode'), divCode = document.getElementById('code');
+	    
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&lt;div id=\'test\'&gt;&lt;\/div&gt;</b><br>');
+	    divEditorCode.insertAdjacentHTML('beforeend', '<br><b>&lt;script&gt;</b><br><br>');
+	    divEditorCode.insertAdjacentHTML('beforeend', '<b>if(document.getElementById(\'test\') != null){</b><br><br>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;var div = document.getElementById(\'test\');</b><br><br>');
+		
+		divCode.insertAdjacentHTML('beforeend', '<b>var mine = { a: \'dirt\', b: \'coal\', c: \'more dirt\', d: \'gold\', e: \'more dirt\', f: \'diamonds\', g: \'more dirt\' };<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '&nbsp;&nbsp;<b>var mine = { a: \'dirt\', b: \'coal\', c: \'more dirt\', d: \'gold\', e: \'more dirt\', f: \'diamonds\', g: \'more dirt\' };<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<br><b>var keepMining = true;<br><br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<br>&nbsp;&nbsp;<b>var keepMining = true;<br><br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<b>for (var treasure in mine){<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '&nbsp;&nbsp;<b>for (var treasure in mine){<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;switch (treasure){<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;switch (treasure){<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;case \'d\':<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case \'d\':<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;div.insertAdjacentHTML(\'beforeend\', \'We struck gold! Let\\\'s keep mining...&lt;br&gt;\');</b><br>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;div.insertAdjacentHTML(\'beforeend\', \'We struck gold! Let\\\'s keep mining...&lt;br&gt;\');</b><br>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;case \'f\':<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;case \'f\':<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keepMining = false;</b><br>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keepMining = false;</b><br>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;div.insertAdjacentHTML(\'beforeend\', \'We found diamonds! We\\\'re done!&lt;br&gt;\');</b><br>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;div.insertAdjacentHTML(\'beforeend\', \'We found diamonds! We\\\'re done!&lt;br&gt;\');</b><br>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;default:<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default:<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;div.insertAdjacentHTML(\'beforeend\', \'What we\\\'ve found so far: \' + mine[treasure] + \'&lt;br&gt;\');</b><br>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;div.insertAdjacentHTML(\'beforeend\', \'What we\\\'ve found so far: \' + mine[treasure] + \'&lt;br&gt;\');</b><br>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;}<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;}<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;if (!keepMining) break;<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;if (!keepMining) break;<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<b>}<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '&nbsp;&nbsp;<b>}<br></b>');
+		
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>}</b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<br><br><b>&lt;\/script&gt;</b>');
+		codeToPaste = divEditorCode.innerText;
+		divT.insertAdjacentHTML('beforeend', '<br><b>The</b> code above populates the following result to a &lt;div&gt; element on the screen:<br><br>');
+       
+		var mine = { a: 'dirt', b: 'coal', c: 'more dirt', d: 'gold', e: 'more dirt', f: 'diamonds', g: 'more dirt' };
+
+		var keepMining = true;
+
+		for (var treasure in mine){
+			switch (treasure){
+				case 'd':
+					divT.insertAdjacentHTML('beforeend', 'We struck gold! Let\'s keep mining...<br>');
+					break;
+				case 'f':
+					keepMining = false;
+					divT.insertAdjacentHTML('beforeend', 'We found diamonds! We\'re done!<br>');
+					break;
+				default:
+					divT.insertAdjacentHTML('beforeend', 'What we\'ve found so far: ' + mine[treasure] + '<br>');
+			}
+			if (!keepMining) break;
+		}
+       
+		elm2.appendChild(divT);
+
+    }
+  </script>
+  <br><br>
+</body>
+</html>

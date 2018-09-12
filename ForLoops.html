@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="icon" href="JoustingKnight.png">
+	<link rel="stylesheet" type="text/css" href="HasteStyles.css">
+	<title>Make Haste! For Loop</title>
+  
+  <script>
+  
+    // Copies a string to the clipboard. Must be called from within an event handler such as click.
+	// May return false if failed
+	// Browser support for Chrome 43+, Firefox 42+, Edge and IE 10+.
+	// Safari support? Returns false.
+	// IE: The clipboard feature may be disabled by an adminstrator. By default a prompt may
+	// be shown the first time the clipboard is used (per session).
+	function highlight(text) {
+		
+		var e = document.getElementById("code");
+		var textNode = ''; //text node is the first child node of a span
+		
+		for (a = 0; a <= e.childNodes.length - 1; a++) {
+			textNode += e.childNodes[a].textContent + '\n';
+		}
+		
+		if (window.clipboardData && window.clipboardData.setData) {
+			// IE specific code path to prevent textarea being shown while dialog is visible.
+			return clipboardData.setData("Text", textNode); 
+		} else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
+			var textarea = document.createElement("textarea");
+			textarea.textContent = textNode;
+			textarea.style.position = "fixed";  // Prevent scrolling to bottom of page in MS Edge.
+			document.body.appendChild(textarea);
+			textarea.select();
+			try {
+				document.execCommand("copy");  // Security exception may be thrown by some browsers.
+			} catch (ex) {
+				console.warn("Copy to clipboard failed.", ex);
+				return false;
+			} finally {
+				document.body.removeChild(textarea);
+			}
+		}
+		
+		var r = document.createRange();
+
+		r.setStart(e.firstChild,0); 
+		r.setEnd(e.lastChild,1);
+		
+		var s = window.getSelection();
+		s.removeAllRanges();
+		s.addRange(r);
+
+		setTimeout(function() {
+			window.alert('The selected code has been copied to the clipboard.\nPaste into <body> of html page.');
+		},  15);
+		
+		//window.prompt("Copy to clipboard: Ctrl+C, Enter", textNode);
+	}
+	
+	function pasteIntoEditor(codeToPaste) {
+		//var codeToPaste = prompt("Hey type something here: ");
+		localStorage.setItem("codeFromExample",codeToPaste);
+		window.open('CodeEditor.html', '_self');
+	}
+
+</script>
+  
+</head>
+<body>
+  <h2><a oncontextmenu="return false" href="javascript:void window.open('Tutorial_Main.html', '_self');">
+    All Examples
+  </a></h2>
+  <div id="title"></div><!--<button id='copy'>Copy code to clipboard</button>&nbsp;--><button id='paste'>Paste code in Code Editor</button><br><br>
+  <div id="testing"><div id="divCode" style="background-color:#F7EEF1"><span id='code' style='color:black'></span></div></div>
+  <br><br><button id='next' onclick="javascript:void window.open('WhileLoop.html', '_self');">Next Example</button>
+  <div id="editorCode" style="display: none;"></div>
+  <script>
+	var codeToPaste = "";
+	
+	//document.querySelector("#copy").onclick = function() {
+	//	var result = highlight(new Date().toString());
+	//};
+	
+	document.querySelector("#paste").onclick = function() {
+		var result = pasteIntoEditor(codeToPaste);
+	};
+  
+    if(document.getElementById("title") != null){
+		var elm1 = document.getElementById("title"), divS = document.createElement('div');
+		divS.innerHTML = '<h2>Basic Javascript For Loop</h2>';
+		divS.insertAdjacentHTML('beforeend', '<b>In</b> the first <font style="color: red">for</font> loop below, the first statement <font style="color: red">a = 0</font> declares an integer variable named "a" and assigns it a value of "0".<br>');
+		divS.insertAdjacentHTML('beforeend', '<b>Javascript</b> automatically treats the variable as an integer as it is the first statement in the loop and you have assigned it an integer value of "0".<br>');
+		divS.insertAdjacentHTML('beforeend', '<b>The</b> second statement <font style="color: red">a <= 10</font> says to loop as long as "a" is less than or equal to "10".<br>');
+		divS.insertAdjacentHTML('beforeend', '<b>The</b> value of "a" starts off as "0" because we assigned it "0". Then, as the loop starts, "a" will increase (incremental loop) by 1 until it reaches 10, then it will stop looping.<br>');
+		divS.insertAdjacentHTML('beforeend', '<b>The</b> third statement <font style="color: red">a++</font> means, to add 1 to "a" until our condition in statement two is false.<br>');
+		divS.insertAdjacentHTML('beforeend', '<b>The</b> second loop at bottom of page counts down (decremental).<br>');
+		divS.insertAdjacentHTML('beforeend', '<b>Although</b> none of these statements are required in Javascript, most of the time they are declared (or assigned) in this way.');
+		divS.insertAdjacentHTML('beforeend', '<h4>Incremental For loop:</h4>');
+		elm1.appendChild(divS);
+    }
+    if(document.getElementById("testing") != null){
+		var elm2 = document.getElementById("testing"), divT = document.createElement('div'), divEditorCode = document.getElementById('editorCode'), divCode = document.getElementById('code');
+	   
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&lt;div id=\'test\'&gt;&lt;\/div&gt;</b><br>');
+	    divEditorCode.insertAdjacentHTML('beforeend', '<br><b>&lt;script&gt;</b><br><br>');
+	    divEditorCode.insertAdjacentHTML('beforeend', '<b>if(document.getElementById(\'test\') != null){</b><br><br>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;var div = document.getElementById(\'test\');</b><br><br>');
+		
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;<b>for (a = 0; a <= 10; a++) {<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;<b>for (a = 0; a <= 10; a++) {<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;div.insertAdjacentHTML(\'beforeend\', \'a = \' + a + \'&lt;br&gt;\');<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;div.insertAdjacentHTML(\'beforeend\', \'a = \' + a + \'&lt;br&gt;\');<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;}<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;}<br></b>');
+		
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>}</b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<br><br><b>&lt;\/script&gt;</b>');
+		codeToPaste = divEditorCode.innerText;
+		divT.insertAdjacentHTML('beforeend', '<br><b>The</b> code above populates the following result to a &lt;div&gt; element on the screen:<br><br>');
+       
+		for (a = 0; a <= 10; a++) {
+			divT.insertAdjacentHTML('beforeend', 'a = ' + a + '<br>');
+		}
+
+		divT.insertAdjacentHTML('beforeend', '<h4>Decremental For loop:</h4><h4>for (a = 10; a >= 0; a--)</h4>');
+		divT.insertAdjacentHTML('beforeend', '<b>The</b> code above will print the following:<br><br>');
+
+		for (a = 10; a >= 0; a--) {
+			divT.insertAdjacentHTML('beforeend', 'a = ' + a + '<br>');
+		}
+       
+		elm2.appendChild(divT);
+
+    }
+  </script>
+  <br><br>
+</body>
+</html>

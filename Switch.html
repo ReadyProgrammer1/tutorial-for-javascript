@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="icon" href="JoustingKnight.png">
+	<link rel="stylesheet" type="text/css" href="HasteStyles.css">
+	<title>Make Haste! Switch</title>
+  
+  <script>
+  
+    // Copies a string to the clipboard. Must be called from within an event handler such as click.
+	// May return false if failed
+	// Browser support for Chrome 43+, Firefox 42+, Edge and IE 10+.
+	// Safari support? Returns false.
+	// IE: The clipboard feature may be disabled by an adminstrator. By default a prompt may
+	// be shown the first time the clipboard is used (per session).
+	function highlight(text) {
+		
+		var e = document.getElementById("code");
+		var textNode = ''; //text node is the first child node of a span
+		
+		for (a = 0; a <= e.childNodes.length - 1; a++) {
+			textNode += e.childNodes[a].textContent + '\n';
+		}
+		
+		if (window.clipboardData && window.clipboardData.setData) {
+			// IE specific code path to prevent textarea being shown while dialog is visible.
+			return clipboardData.setData("Text", textNode); 
+		} else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
+			var textarea = document.createElement("textarea");
+			textarea.textContent = textNode;
+			textarea.style.position = "fixed";  // Prevent scrolling to bottom of page in MS Edge.
+			document.body.appendChild(textarea);
+			textarea.select();
+			try {
+				document.execCommand("copy");  // Security exception may be thrown by some browsers.
+			} catch (ex) {
+				console.warn("Copy to clipboard failed.", ex);
+				return false;
+			} finally {
+				document.body.removeChild(textarea);
+			}
+		}
+		
+		var r = document.createRange();
+
+		r.setStart(e.firstChild,0); 
+		r.setEnd(e.lastChild,0);
+		
+		var s = window.getSelection();
+		s.removeAllRanges();
+		s.addRange(r);
+
+		setTimeout(function() {
+			window.alert('The selected code has been copied to the clipboard.\nPaste into <body> of html page.');
+		},  15);
+		
+		//window.prompt("Copy to clipboard: Ctrl+C, Enter", textNode);
+	}
+	
+	function pasteIntoEditor(codeToPaste) {
+		//var codeToPaste = prompt("Hey type something here: ");
+		localStorage.setItem("codeFromExample",codeToPaste);
+		window.open('CodeEditor.html', '_self');
+	}
+
+</script>
+  
+</head>
+<body>
+  <h2><a oncontextmenu="return false" href="javascript:void window.open('Tutorial_Main.html', '_self');">
+    All Examples
+  </a></h2>
+  <div id="title"></div><!--<button id='copy'>Copy code to clipboard</button>&nbsp;--><button id='paste'>Paste code in Code Editor</button><br><br>
+  <div id="testing"><div id="divCode" style="background-color:#F7EEF1"><span id='code' style='color:black'></span></div></div>
+  <br><br><button id='next' onclick="javascript:void window.open('ForLoops.html', '_self');">Next Example</button>
+  <div id="editorCode" style="display: none;"></div>
+  <script>
+	var codeToPaste = "";
+	
+	//document.querySelector("#copy").onclick = function() {
+	//	var result = highlight(new Date().toString());
+	//};
+	
+	document.querySelector("#paste").onclick = function() {
+		var result = pasteIntoEditor(codeToPaste);
+	};
+  
+    if(document.getElementById("title") != null){
+		var elm1 = document.getElementById("title"), divS = document.createElement('div');
+		divS.innerHTML = '<h2>Basic Javascript Switch Statement</h2>';
+		divS.insertAdjacentHTML('beforeend', '<b>Declare</b> variable "DesertCondition" and assign it a string value of "dry": <font style="color: red">var DesertCondition = \'dry\'</font>.<br>');
+		divS.insertAdjacentHTML('beforeend', '<b>The</b> "DesertCondition" variable can hold other conditions such as "hot" and "cool", etc. but in our case the desert will be dry.<br>');
+		divS.insertAdjacentHTML('beforeend', '<b>Check</b> value of <font style="color: red">DesertCondition</font> variable to verify our desert condition.<br>');
+		divS.insertAdjacentHTML('beforeend', '<b>If</b> the condition of the desert is "dry" then populate &lt;div&gt; element with relevant information.<br><br>');
+
+		elm1.appendChild(divS);
+    }
+    if(document.getElementById("testing") != null){
+		var elm2 = document.getElementById("testing"), divT = document.createElement('div'), divEditorCode = document.getElementById('editorCode'), divCode = document.getElementById('code');
+	    
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&lt;div id=\'test\'&gt;&lt;\/div&gt;</b><br>');
+	    divEditorCode.insertAdjacentHTML('beforeend', '<br><b>&lt;script&gt;</b><br><br>');
+	    divEditorCode.insertAdjacentHTML('beforeend', '<b>if(document.getElementById(\'test\') != null){</b><br><br>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;var div = document.getElementById(\'test\');</b><br><br>');
+		
+		divCode.insertAdjacentHTML('beforeend', '<b>var DesertCondition = \'dry\';<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '&nbsp;&nbsp;<b>var DesertCondition = \'dry\';<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<br><b>switch (DesertCondition) {<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<br>&nbsp;&nbsp;<b>switch (DesertCondition) {<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;case \'hot\':<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;case \'hot\':<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;div.insertAdjacentHTML(\'beforeend\', \'The desert is hot. Drink plenty of water.&lt;br&gt;\');<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;div.insertAdjacentHTML(\'beforeend\', \'The desert is hot. Drink plenty of water.&lt;br&gt;\');<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;break;</b><br>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;</b><br>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;case \'cool\':<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;case \'cool\':<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;div.insertAdjacentHTML(\'beforeend\', \'The desert is cool. It must be midnight.&lt;br&gt;\');<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;div.insertAdjacentHTML(\'beforeend\', \'The desert is cool. It must be midnight.&lt;br&gt;\');<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;break;</b><br>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;</b><br>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;case \'dry\':<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;case \'dry\':<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;div.insertAdjacentHTML(\'beforeend\', \'The desert is dry. Still drink plenty of water.&lt;br&gt;\');<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;div.insertAdjacentHTML(\'beforeend\', \'The desert is dry. Still drink plenty of water.&lt;br&gt;\');<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;break;</b><br>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;break;</b><br>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;default:<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;default:<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;div.insertAdjacentHTML(\'beforeend\', \'The desert is not hot, cool, or dry. It must be a mirage.&lt;br&gt;\');<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;div.insertAdjacentHTML(\'beforeend\', \'The desert is not hot, cool, or dry. It must be a mirage.&lt;br&gt;\');<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<b>}</b><br>');
+		divEditorCode.insertAdjacentHTML('beforeend', '&nbsp;&nbsp;<b>}</b><br>');
+		
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>}</b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<br><br><b>&lt;\/script&gt;</b>');
+		codeToPaste = divEditorCode.innerText;
+		
+		divT.insertAdjacentHTML('beforeend', '<br><b>The</b> code above populates the following result to a &lt;div&gt; element on the screen:<br><br>');
+       
+		var DesertCondition = 'dry';
+		
+		switch (DesertCondition) {
+			case 'hot':
+				divT.insertAdjacentHTML('beforeend', 'The desert is hot. Drink plenty of water.<br>');
+				break;
+			case 'cool':
+				divT.insertAdjacentHTML('beforeend', 'The desert is cool. It must be midnight.<br>');
+				break;
+			case 'dry':
+				divT.insertAdjacentHTML('beforeend', 'The desert is dry. Still drink plenty of water.<br>');
+				break; 
+			default: 
+				divT.insertAdjacentHTML('beforeend', 'The desert is not hot, cool, or dry. It must be a mirage.<br>');
+		}
+		
+		elm2.appendChild(divT);
+
+    }
+  </script>
+  <br><br>
+</body>
+</html>
