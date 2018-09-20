@@ -91,8 +91,8 @@
     if(document.getElementById("title") != null){
        var elm1 = document.getElementById("title"), divS = document.createElement('div');
        divS.innerHTML = '<h2>Basic Javascript Array</h2>';
-	   divS.insertAdjacentHTML('beforeend', '<b>Declare</b> and populate the Array: <font style="color: red">var continents = [\'Asia\', \'Africa\', etc.];</font><br>');
-       divS.insertAdjacentHTML('beforeend', '<b>Print</b> entire contents of Array by looping through each value, then update &lt;div&gt; element.<br><br>');
+	   divS.insertAdjacentHTML('beforeend', '<b>Declare</b> and populate the Array: <font style="color: red">var continents = [[\'Asia\', \'4,436,224,000\'], [\'Africa\', \'1,216,130,000\'], etc.];</font><br>');
+       divS.insertAdjacentHTML('beforeend', '<b>Print</b> entire contents of Array by looping over each value, then update &lt;div&gt; element.<br><br>');
        elm1.appendChild(divS);
     }
     if(document.getElementById("testing") != null){
@@ -103,28 +103,25 @@
 		divEditorCode.insertAdjacentHTML('beforeend', '<b>if(document.getElementById(\'test\') != null){</b><br><br>');
 		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;var div = document.getElementById(\'test\');</b><br><br>');
 	   
-		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;var continents = [\'Asia\', \'Africa\', \'North America\', \'South America\', \'Antartica\', \'Europe\', \'Australia\'];</b><br><br>');
-		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;var continents = [\'Asia\', \'Africa\', \'North America\', \'South America\', \'Antartica\', \'Europe\', \'Australia\'];</b><br><br>');
-		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;for (a = 0; continents[a];) {<br></b>');
-		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;for (a = 0; continents[a];) {<br></b>');
-		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;div.insertAdjacentHTML(\'beforeend\', \'Continent \' + (a + 1) + \':&nbsp;\' + continents[a] + \'&lt;br&gt;\');<br></b>');
-		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;div.insertAdjacentHTML(\'beforeend\', \'Continent \' + (a + 1) + \':&nbsp;\' + continents[a] + \'&lt;br&gt;\');<br></b>');
-		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;a++;<br></b>');
-		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a++;<br></b>');
-		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;}<br></b>');
-		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;}<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;var continents = [[\'Asia\', \'4,436,224,000\'], [\'Africa\', \'1,216,130,000\'], [\'Europe\', \'738,849,000\'], [\'North America\', \'579,024,000\'], [\'South America\', \'422,535,000\'], [\'Australia\', \'39,901,000\'], [\'Antartica\', \'1,106\']];</b><br><br>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;var continents = [[\'Asia\', \'4,436,224,000\'], [\'Africa\', \'1,216,130,000\'], [\'Europe\', \'738,849,000\'], [\'North America\', \'579,024,000\'], [\'South America\', \'422,535,000\'], [\'Australia\', \'39,901,000\'], [\'Antartica\', \'1,106\']];</b><br><br>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;continents.forEach(function(item, index, array) {<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;continents.forEach(function(item, index, array) {<br></b>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;div.insertAdjacentHTML(\'beforeend\', \'Continent Population Rank \' + (index + 1) + \':&nbsp;\' + continents[index][0] + \' - \' + continents[index][1] + \'&lt;br&gt;\');</b><br>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;div.insertAdjacentHTML(\'beforeend\', \'Continent Population Rank \' + (index + 1) + \':&nbsp;\' + continents[index][0] + \' - \' + continents[index][1] + \'&lt;br&gt;\');</b><br>');
+		divCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;});<br></b>');
+		divEditorCode.insertAdjacentHTML('beforeend', '<b>&nbsp;&nbsp;&nbsp;&nbsp;});<br></b>');
 	   
 		divEditorCode.insertAdjacentHTML('beforeend', '<b>}</b>');
 		divEditorCode.insertAdjacentHTML('beforeend', '<br><br><b>&lt;\/script&gt;</b>');
 		codeToPaste = divEditorCode.innerText;
 		divT.insertAdjacentHTML('beforeend', '<br><b>The</b> code above prints the following result to a &lt;div&gt; element on the screen:<br><br>');
        
-	   var continents = ['Asia', 'Africa', 'North America', 'South America', 'Antartica', 'Europe', 'Australia'];
+	   var continents = [['Asia', '4,436,224,000'], ['Africa', '1,216,130,000'], ['Europe', '738,849,000'], ['North America', '579,024,000'], ['South America', '422,535,000'], ['Australia', '39,901,000'], ['Antartica', '1,106']];
 	   
-	   for (a = 0; continents[a];) {
-         divT.insertAdjacentHTML('beforeend', 'Continent ' + (a + 1) + ':&nbsp;' + continents[a] + '<br>');
-         a++;
-	   } 
+	   continents.forEach(function(item, index, array) {
+         divT.insertAdjacentHTML('beforeend', 'Continent Population Rank ' + (index + 1) + ':&nbsp;' + continents[index][0] + ' - ' + continents[index][1] + '<br>');
+	   }); 
        
        elm2.appendChild(divT);
 
